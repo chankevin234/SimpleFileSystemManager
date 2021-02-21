@@ -1,7 +1,8 @@
 #imported libraries
+import sys
 import math
 
-class Block: #1 1KB Block
+class File: #1 1KB Block
     def __init__(self, fileName=str): #constructor "", size=int" 
         self.fileName = fileName # the name data
         # self.size = size
@@ -33,64 +34,63 @@ class FileSystem: #file system linked list
             print (printval.fileName) #print node
             printval = printval.nextval #append block connected to head
     
-    def saveFile(self, newName): #saves a file to end of the linked list , size=int
-        newBlock = Block(newName) #sets value for newBlock
-        if self.headval is None: #checks to see if head value exists in the linked list; if not, make the newblock the new head
-            self.headval = newBlock
+    def saveFile(self, newFile): #saves a file to end of the linked list , size=int
+        newBlock = File(newFile) #sets value for newBlock
+        newBlock.nextval = self.headval #sets the following block to be the head (adds to front of the list)
+        self.headval = newBlock #sets the new head value of the linked list to newBlock
+        return
+
+    def deleteFile(self, removeKey): #removes file based on the removekey
+        temp = self.headval 
+        prev = self.headval 
+        if temp.fileName == removeKey: 
+            if temp.nextval is None: 
+                print("Can't delete the node as it has only one node") 
+            else: 
+                temp.fileName = temp.nextval.removeKey 
+                temp.nextval = temp.nextval.next
             return
-
-        current = self.headval # sets the head as new lastBlock
-        while(current.nextval): # iterates through linked list and assigns last block to following node until there is a node with no following node 
-            current = current.nextval # sets this empty spot after current node as the new last block
-        current.nextval = newBlock # creates a new block in the empty spot
-    
-    def deleteFile(self, removeName):
-        HeadVal = self.headval
-
-        if (HeadVal is not None):
-            if (HeadVal.fileName == removeName):
-                self.head = HeadVal.nextval
-                HeadVal = None
-                return
-
-        while (HeadVal is not None):
-            if HeadVal.fileName == removeName:
-                break
-            prev = HeadVal
-            HeadVal = HeadVal.nextval
-
-        if (HeadVal == None):
-            return
-
-        prev.next = HeadVal.nextval
-
-        HeadVal = None
-
+        while temp.nextval is not None and temp.fileName != removeKey: 
+            prev = temp 
+            temp = temp.nextval
+        if temp.nextval is None and temp.fileName != removeKey: 
+            print("Can't delete the node as it doesn't exist") 
+         # If node is last node of the linked list 
+        elif temp.nextval is None and temp.fileName == removeKey: 
+            prev.nextval = None
+        else: 
+            prev.nextval = temp.nextval
+        
 
 if __name__ == "__main__": #main method
     
     #user input
-    inp = input("Type anything: leave empty for default 100 \n")
+    inp = input("Type anything: leave empty for default 100 blocks \n")
     if (inp): 
         storageSize = inp #max number of nodes in file system
     else:
         storageSize = 100 #max number of nodes in file system
         
-    blockList = FileSystem() #instant the filesystem as an object containing x block (STEP1)
-    blockList.headval = Block("defaultHeadNode") #set the HEAD value
-    e2 = Block("Node2") #set node 2 as Tue, 1000 bytes
-    e3 = Block("Node3") #set node 3 as Wed, 10 bytes
+    blockList = FileSystem() #instantiate the filesystem as an object containing x block (STEP1)
+    blockList.headval = File("defaultHeadNode") #set the HEAD value
+    e2 = File("Node2") #set node 2 as Tue, 1000 bytes
+    e3 = File("Node3") #set node 3 as Wed, 10 bytes
 
     
     blockList.headval.nextval = e2 # appends first Node to second node
     e2.nextval = e3 # appends second Node to third node
+
     blockList.saveFile("Node4")
-    blockList.deleteFile("Node2")
+    # blockList.deleteFile("defaultHeadNode")
+    # blockList.deleteFile("Node2")
+    blockList.deleteFile("Node3")
+
+
     #print out all blocks
     blockList.printList()
     # e2.validate()
     
-    #prints number of used nodes in the list
+    #prints number of used nodes currently in the linkedlist
     try:
         nodeNumber = blockList.countNodes(blockList.headval) #takes in headval of linkedlist
     except:
