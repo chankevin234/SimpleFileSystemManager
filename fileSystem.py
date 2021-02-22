@@ -44,7 +44,7 @@ class FileSystem: #file system linked list
         temp = self.headval 
         prev = self.headval 
         if temp.fileName == removeKey: 
-            if temp.nextval is None or temp.fileName == 'defaultHeadNode': 
+            if (temp.nextval is None): 
                 print("Can't delete the node as it has only one node") #prevents user from deleting all nodes in the linked list
             else: 
                 temp.fileName = temp.nextval.fileName 
@@ -60,20 +60,21 @@ class FileSystem: #file system linked list
             prev.nextval = None
         else: 
             prev.nextval = temp.nextval
+    
 
     def readFile(self, name):
         printval = self.headval #checks for whether head of linked list is null
 
         while (printval.fileName != name): #iterates through list
             print ("Searching...") #print node's data
-            printval = printval.nextval
             if printval.nextval is None: 
-                print("Can't delete the node as it doesn't exist")
+                print("Can't find the node as it doesn't exist")
                 return
+            printval = printval.nextval
+
         print(printval.fileName)
         return 
         
-
 if __name__ == "__main__": #main method
     #user input
     inp = input("Type anything: leave empty for default 100 blocks \n")
@@ -90,23 +91,23 @@ if __name__ == "__main__": #main method
     # blockList.headval.nextval = e2 # appends first Node to second node
     # e2.nextval = e3 # appends second Node to third node
     print("creating first 7 Nodes")
-    blockList.saveFile("Node2")
-    blockList.saveFile("Node3")
-    blockList.saveFile("Node4")
-    blockList.saveFile("Node5")
-    blockList.saveFile("Node6")
-    blockList.saveFile("Node7")
+    # blockList.saveFile("Node2")
+    # blockList.saveFile("Node3")
+    # blockList.saveFile("Node4")
+    # blockList.saveFile("Node5")
+    # blockList.saveFile("Node6")
+    # blockList.saveFile("Node7")
     print("deleting default storage block")
     blockList.deleteFile("defaultHeadNode")
-    print("deleting node5")
-    blockList.deleteFile("Node5")
-    print("deleting node7")
-    blockList.deleteFile("Node7")
+    # print("deleting node5")
+    # blockList.deleteFile("Node5")
+    # print("deleting node7")
+    # blockList.deleteFile("Node7")
 
     #print out all existing files
     blockList.printAllFiles()
     # e2.validate()
-    blockList.readFile("Node7")
+    # blockList.readFile("Node7")
     
     #prints number of used nodes currently in the linkedlist
     try:
