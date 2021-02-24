@@ -76,22 +76,20 @@ class FileSystem: #file system linked list
             prev = temp 
             temp = temp.nextval
         if temp.nextval is None and temp.giveID != removeKey: 
-            print("Can't delete the node as it doesn't exist") 
+            print("Can't delete the file as it doesn't exist") 
         # If node is last node of the linked list 
         elif temp.nextval is None and temp.giveID == removeKey: 
             prev.nextval = None
         else: 
             prev.nextval = temp.nextval
     
-
     def readFile(self, name):
         printval = self.headval #checks for whether head of linked list is null
-
         while (printval.giveID != name): #iterates through list
             print ("Searching...") #print node's data
             if printval.nextval is None: 
-                print("Can't find the node as it doesn't exist")
-                return
+                print("Can't find the file as it doesn't exist")
+                return 
         return printval
         
 if __name__ == "__main__": #main method
@@ -111,9 +109,9 @@ if __name__ == "__main__": #main method
     print("Available Blocks: {}".format(blockList.remaining))
     
     print("Select 1 for SaveFile \nSelect 2 for DeleteFile \nSelect 3 for ReadFile \nSelect 4 for PrintAllFiles")
-    inpMenu = input("(Type No to Exit)")
+    inpMenu = input("(Type 'Exit' to Exit)")
     
-    while (inpMenu != "No"):
+    while (inpMenu != "Exit"):
         if (inpMenu == "1"):
             #save
             while True:
@@ -131,7 +129,6 @@ if __name__ == "__main__": #main method
         elif (inpMenu == "2"):
             #delete
             while True:
-                print("Available Blocks: {}".format(blockList.remaining))
                 inpFileName = input("Please input the giveID) to Delete \n(Type 'No' to Exit)")
                 if (inpFileName == "No"):
                     print("Bye")
@@ -143,13 +140,14 @@ if __name__ == "__main__": #main method
             #read
             while True:
                 print("Available Blocks: {}".format(blockList.remaining))
-                inpFileName = input("Please input the giveID) to View its data \n(Type 'No' to Exit)")
+                inpFileName = input("Please input the giveID/filename to view its data \n(Type 'No' to Exit)")
                 if (inpFileName == "No"):
                     print("Bye")
                     break
                 selectFile = blockList.readFile(inpFileName)
-                print("FileName/GiveID      Size        Blocks Used")
-                print("{}           {}           {}".format(selectFile.giveID, selectFile.size, selectFile.blockNumber()))
+                if (selectFile != None):
+                    print("FileName/GiveID      Size        Blocks Used")
+                    print("{}           {}           {}".format(selectFile.giveID, selectFile.size, selectFile.blockNumber()))
 
         elif (inpMenu == "4"):
             #printAll   
@@ -167,7 +165,7 @@ if __name__ == "__main__": #main method
             print("Incorrect Input dummy ;P")
             
         print("Select 1 for SaveFile \nSelect 2 for DeleteFile \nSelect 3 for ReadFile \nSelect 4 for PrintAllFiles")
-        inpMenu = input("(No to Exit)")
+        inpMenu = input("(Exit to Exit)")
 
     print("End...")
    
