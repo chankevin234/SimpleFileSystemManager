@@ -36,15 +36,15 @@ class FileSystem: #file system linked list
     def printAllFiles(self): #prints out the list of nodes in linkedList
         printval = self.headval #checks for whether head of linked list is null
         
-        print("GiveID       Size           Blocks Used")
+        print("FileName/GiveID      Size        Blocks Used")
         while printval is not None: #iterates through list
-            print (printval.giveID, printval.size) #print nodes
+            print ("{}        {}        {}".format(printval.giveID, printval.size, printval.blockNumber())) #print nodes
             printval = printval.nextval #append block connected to head
         
     
     def saveFile(self, newFile, size=int): #saves a file to beg of the linked list 
         if (newFile == "defaultHeadNode"):
-            print("You're an Idiot.. not added")
+            print("You can't create more default memory... file not added")
             return
 
         newBlock = File(newFile, size) #sets value for newBlock
@@ -52,7 +52,7 @@ class FileSystem: #file system linked list
         fileBlockNum = newBlock.blockNumber() #num of blocks needed for this file
 
         if(fileBlockNum > remainingBlocks):
-            print("crap no room... file not added")
+            print("No more room... file not added")
             return
         
         newBlock.nextval = self.headval #sets the following block to be the new head (adds to front of the list)
@@ -63,9 +63,8 @@ class FileSystem: #file system linked list
 
     def deleteFile(self, removeKey): #removes file based on the removekey
         if removeKey == "defaultHeadNode": #prevents removal of defaultHeadNode
-            print("Can't delete defaultHeadNode")
+            print("Can't delete default memory")
             return
-
         temp = self.headval 
         prev = self.headval 
         if temp.giveID == removeKey: 
@@ -93,16 +92,15 @@ class FileSystem: #file system linked list
             if printval.nextval is None: 
                 print("Can't find the node as it doesn't exist")
                 return
-            printval = printval.nextval
         return printval
         
 if __name__ == "__main__": #main method
     #user input
-    inp = input("Type anything: leave empty for default 100 blocks...if 1 is entered, it will default \n")
-    if (inp and int(inp) > 1): 
-        storageSize = int(inp) - 1 #max number of blocks in file system
+    inp = input("Type in storageDevice's size in MB. Leave empty for default (1MB or 1024 blocks of 1KB)...if 1 or 0 is entered, it will default to 1MB \n")
+    if (int(inp) > 1):
+        storageSize = int(inp) * 1024 - 1 #max number of blocks in file system
     else:
-        storageSize = 99 #max number of blocks in file system
+        storageSize = 1023 #max number of blocks in file system
         
     blockList = FileSystem() #instantiate the filesystem as an object containing x block (STEP1)
     
@@ -113,19 +111,19 @@ if __name__ == "__main__": #main method
     print("Available Blocks: {}".format(blockList.remaining))
     
     print("Select 1 for SaveFile \nSelect 2 for DeleteFile \nSelect 3 for ReadFile \nSelect 4 for PrintAllFiles")
-    inpMenu = input("(No to Exit)")
+    inpMenu = input("(Type No to Exit)")
+    
     while (inpMenu != "No"):
-        
         if (inpMenu == "1"):
             #save
             while True:
-                inpFileName = input("Please input Filename (it will be your giveID) \n(Type 'No' to Exit)")
+                inpFileName = input("Please input Filename (it will be your giveID) \n**Typing the Name of Existing File will Overwrite it!** \n(Type 'No' to Exit)")
                 if (inpFileName == "No"):
                     print("Bye")
                     break
                 inpByte = input("Please input the file's size in Bytes (Int Only) \n")
-                if(ValueError):
-                    print("since size was not selected, default saving to 1 block")
+                if(inpByte == "0"):
+                    print("Since size was not selected, default saving to 1KB block")
                     inpByte = 1024
                 blockList.saveFile(inpFileName, int(inpByte))
                 print("Update: Available Blocks: {}".format(blockList.remaining))
@@ -150,7 +148,8 @@ if __name__ == "__main__": #main method
                     print("Bye")
                     break
                 selectFile = blockList.readFile(inpFileName)
-                print(selectFile.giveID, selectFile.size, selectFile.blockNumber())
+                print("FileName/GiveID      Size        Blocks Used")
+                print("{}           {}           {}".format(selectFile.giveID, selectFile.size, selectFile.blockNumber()))
 
         elif (inpMenu == "4"):
             #printAll   
@@ -167,7 +166,7 @@ if __name__ == "__main__": #main method
         else:
             print("Incorrect Input dummy ;P")
             
-        print("Select 1 for SaveFile \n Select 2 for DeleteFile \n Select 3 for ReadFile \n Select 4 for PrintAllFiles")
+        print("Select 1 for SaveFile \nSelect 2 for DeleteFile \nSelect 3 for ReadFile \nSelect 4 for PrintAllFiles")
         inpMenu = input("(No to Exit)")
 
     print("End...")
