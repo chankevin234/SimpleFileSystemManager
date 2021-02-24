@@ -1,6 +1,13 @@
 #imported libraries
 import sys
 import math
+from os import system, name 
+
+def clear(): 
+  
+    # for windows 
+    if name == 'nt': 
+        _ = system('cls') 
 
 class File: #1 1KB Block
     def __init__(self, giveID=str, size=int): #constructor
@@ -46,7 +53,7 @@ class FileSystem: #file system linked list
         if (newFile == "defaultHeadNode"):
             print("You can't create more default memory... file not added")
             return
-
+      
         newBlock = File(newFile, size) #sets value for newBlock
         remainingBlocks = self.remaining #checking for remaining memory
         fileBlockNum = newBlock.blockNumber() #num of blocks needed for this file
@@ -86,7 +93,7 @@ class FileSystem: #file system linked list
     def readFile(self, name):
         printval = self.headval #checks for whether head of linked list is null
         while (printval.giveID != name): #iterates through list
-            print ("Searching...") #print node's data
+            # print ("Searching...") #print node's data
             if printval.nextval is None: 
                 print("Can't find the file as it doesn't exist")
                 return 
@@ -116,38 +123,42 @@ if __name__ == "__main__": #main method
             #save
             while True:
                 inpFileName = input("Please input Filename (it will be your giveID) \n**Typing the Name of Existing File will Overwrite it!** \n(Type 'No' to Exit)")
+                
                 if (inpFileName == "No"):
-                    print("Bye")
                     break
                 inpByte = input("Please input the file's size in Bytes (Int Only) \n")
+                clear() 
+
                 if(inpByte == "0"):
                     print("Since size was not selected, default saving to 1KB block")
                     inpByte = 1024
+                
                 blockList.saveFile(inpFileName, int(inpByte))
                 print("Update: Available Blocks: {}".format(blockList.remaining))
+            clear() 
                 
         elif (inpMenu == "2"):
             #delete
             while True:
                 inpFileName = input("Please input the giveID) to Delete \n(Type 'No' to Exit)")
                 if (inpFileName == "No"):
-                    print("Bye")
                     break
                 blockList.deleteFile(inpFileName)
                 print("Update: Available Blocks: {}".format(blockList.remaining))
-                
+            clear() 
+    
         elif (inpMenu == "3"):
             #read
             while True:
                 print("Available Blocks: {}".format(blockList.remaining))
                 inpFileName = input("Please input the giveID/filename to view its data \n(Type 'No' to Exit)")
                 if (inpFileName == "No"):
-                    print("Bye")
                     break
                 selectFile = blockList.readFile(inpFileName)
                 if (selectFile != None):
                     print("FileName/GiveID      Size        Blocks Used")
                     print("{}           {}           {}".format(selectFile.giveID, selectFile.size, selectFile.blockNumber()))
+            clear() 
 
         elif (inpMenu == "4"):
             #printAll   
@@ -155,12 +166,13 @@ if __name__ == "__main__": #main method
                 blockList.printAllFiles() #print out all existing files
                 inpFileName = input("(Type 'No' to Exit)")
                 if (inpFileName == "No"):
-                    print("Bye")
                     break
                 #prints number of used nodes currently in the linkedlist
                 nodeNumber = blockList.countNodes(blockList.headval) #takes in headval of linkedlist
                         
                 print("Number of Files in the System: {}".format(nodeNumber)) #how many nodes are in use 
+            clear() 
+            
         else:
             print("Incorrect Input dummy ;P")
             
