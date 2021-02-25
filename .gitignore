@@ -1,2 +1,5 @@
 # Folder to ignore
 .vscode/
+
+# Files to ignore
+*.pdf
