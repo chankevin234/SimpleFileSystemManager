@@ -90,6 +90,7 @@ class FileSystem: #file system linked list
             prev.nextval = None
         else: 
             prev.nextval = temp.nextval
+        
     
     def readFile(self, name):
         printval = self.headval #checks for whether head of linked list is null
@@ -113,10 +114,10 @@ if __name__ == "__main__": #main method
     blockList = FileSystem() #instantiate the filesystem as an object containing x block (STEP1)
     
     blockList.remaining = storageSize #instants size of filesystem
-    print("Total Storage: {}".format(storageSize+1))
+    print("Total Storage in 1 KB blocks: {}".format(storageSize+1))
     print("creating default memory...using up 1 block automatically") #creates default undeletable storage block
     blockList.headval = File("defaultHeadNode", 1024) #set the defaultHEAD value
-    print("Available Blocks: {}".format(blockList.remaining))
+    print("Available 1KB Blocks: {}".format(blockList.remaining))
     
     print("Select 1 for SaveFile \nSelect 2 for DeleteFile \nSelect 3 for ReadFile \nSelect 4 for PrintAllFiles")
     inpMenu = input("(Type 'Exit' to Exit)")
@@ -127,7 +128,7 @@ if __name__ == "__main__": #main method
         if (inpMenu == "1"):
             #save
             while True:
-                inpFileName = input("Please input Filename (it will be your giveID) \n**Typing the Name of Existing File will Overwrite it!** \n(Type 'No' to Exit)")
+                inpFileName = input("Please input Filename (it will be your giveID) \n**Typing the Name of Existing File will Overwrite it!** \n(Type 'No' to Stop Saving)")
                 if (inpFileName == "No"):
                     break
 
@@ -152,7 +153,8 @@ if __name__ == "__main__": #main method
                 delete = blockList.deleteFile(inpFileName)
                 if (delete == False):
                     print("Can't delete the file as it doesn't exist") 
-
+                
+                print("File deleted") 
                 print("Update: Available Blocks: {}".format(blockList.remaining))
             clear() 
     
@@ -167,8 +169,8 @@ if __name__ == "__main__": #main method
                 if (selectFile != None):
                     print("FileName/GiveID      Size        Blocks Used")
                     print("{}           {}           {}".format(selectFile.giveID, selectFile.size, selectFile.blockNumber()))
+                                    
             clear() 
-
 
         elif (inpMenu == "4"):
             #printAll   
