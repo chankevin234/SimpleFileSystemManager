@@ -169,7 +169,6 @@ if __name__ == "__main__": #main method
                 if (selectFile != None):
                     print("FileName/GiveID      Size        Blocks Used")
                     print("{}           {}           {}".format(selectFile.giveID, selectFile.size, selectFile.blockNumber()))
-                                    
             clear() 
 
         elif (inpMenu == "4"):
